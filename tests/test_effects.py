@@ -1,55 +1,61 @@
 import pytest
-from effects import Effects
+import eff
 
 
 def test_init():
-    e = Effects(print=print)
+    e = eff.Effects(print=print)
+    assert e.print is print
+
+
+def test_short_alias():
+    assert eff.ects is eff.Effects
+    e = eff.ects(print=print)
     assert e.print is print
 
 
 def test_no_attr():
-    e = Effects()
+    e = eff.Effects()
     with pytest.raises(AttributeError):
         e.print
 
 
 def test_context():
-    with Effects(print=print) as e:
+    with eff.Effects(print=print) as e:
         assert e.print is print
 
 
 def test_context_class_access():
-    with Effects(print=print) as e:
-        assert Effects.print is print
+    with eff.Effects(print=print):
+        assert eff.Effects.print is print
 
 
 def test_context_no_suppress():
     with pytest.raises(ZeroDivisionError):
-        with Effects(print=print):
+        with eff.Effects(print=print):
             raise ZeroDivisionError
 
 
 def test_deep_context():
     sent1 = object()
     sent2 = object()
-    with Effects(sent=sent1) as e1:
+    with eff.Effects(sent=sent1) as e1:
         assert e1.sent is sent1
-        assert Effects.sent is sent1
+        assert eff.Effects.sent is sent1
 
-        with Effects(sent=sent2) as e2:
+        with eff.Effects(sent=sent2) as e2:
             assert e1.sent is sent1
             assert e2.sent is sent2
-            assert Effects.sent is sent2
+            assert eff.Effects.sent is sent2
 
         assert e1.sent is sent1
-        assert Effects.sent is sent1
+        assert eff.Effects.sent is sent1
 
 
 def test_two_contexts():
-    class E1(Effects):
+    class E1(eff.Effects):
         pass
 
-    class E2(Effects):
+    class E2(eff.Effects):
         pass
 
     sent1 = object()
