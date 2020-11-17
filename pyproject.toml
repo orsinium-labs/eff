@@ -1,0 +1,17 @@
+[tool.dephell.main]
+from = {format = "flit", path = "pyproject.toml"}
+to = {format = "setuppy", path = "setup.py"}
+tag = "v."
+
+[build-system]
+requires = ["flit_core >=2,<4"]
+build-backend = "flit_core.buildapi"
+
+[tool.flit.metadata]
+module = "eff"
+author = "Gram"
+author-email = "gram@orsinium.dev"
+home-page = "https://github.com/orsinium-labs/eff"
+classifiers = ["License :: OSI Approved :: MIT License"]
+description-file = "README.md"
+requires-python = ">=3.6"
